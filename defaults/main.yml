@@ -1,0 +1,48 @@
+---
+ct_postgres_task_prefix: "=== POSTGRES CT ==="
+# Common settings
+ct_postgres_enable_ports: true
+# File names
+ct_postgres_template_env: "env.j2"
+ct_postgres_file_env: "{{ ct_postgres_ct_name }}.env"
+# Path settings
+ct_postgres_path_config_base: "/etc/ct_postgres"
+ct_postgres_path_config_env: "{{ ct_postgres_path_config_base }}/{{ ct_postgres_file_env }}"
+ct_postgres_path_base: "/srv/ct_postgres"
+ct_postgres_path_data: "{{ ct_postgres_path_base }}/{{ ct_postgres_ct_name }}"
+ct_postgres_path_ct_data: "/var/lib/postgresql/data"
+# Network settings
+ct_postgres_bind_addr: "127.0.0.1"
+ct_postgres_bind_addr_psql: "{{ ct_postgres_bind_addr }}"
+ct_postgres_bind_port_psql: "5432"
+ct_postgres_bind_ct_port_psql: "5432"
+# Container settings
+ct_postgres_ct_name: "postgres"
+ct_postgres_ct_image: "postgres"
+ct_postgres_ct_version: "latest"
+ct_postgres_ct_restart_policy: "always"
+ct_postgres_ct_state: "started"
+ct_postgres_ct_restart: "no"
+ct_postgres_ct_pull: "no"
+ct_postgres_ct_recreate: "no"
+ct_postgres_ct_ports_psql:
+  - "{{ ct_postgres_bind_addr_psql }}:{{ ct_postgres_bind_port_psql }}:{{ ct_postgres_bind_ct_port_psql }}"
+ct_postgres_ct_ports_extra: []
+ct_postgres_ct_ports: []
+ct_postgres_ct_mount_data:
+  - "{{ ct_postgres_path_data }}:{{ ct_postgres_path_ct_data }}"
+ct_postgres_ct_mount_custom: []
+ct_postgres_ct_mounts: "{{ ct_postgres_ct_mount_data + ct_postgres_ct_mount_custom }}"
+ct_postgres_ct_command:
+  - "postgres"
+# Environment variables
+ct_postgres_env_postgres_user: "postgres"
+ct_postgres_env_postgres_db: "postgres"
+# You have to set initial password yourelf!
+# ct_postgres_env_postgres_password: "SecretPassword"
+# Optional environment variables
+# ct_postgres_env_extra:
+#   POSTGRES_AUTH_METHOD: "md5"
+#   PGDATA: "/var/lib/postgresql/data"
+ct_postgres_env_extra: {}
+...

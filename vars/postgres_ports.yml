@@ -1,0 +1,3 @@
+---
+ct_postgres_ct_ports: "{{ ct_postgres_ct_ports_psql + ct_postgres_ct_ports_extra }}"
+...

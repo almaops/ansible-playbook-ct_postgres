@@ -1,0 +1,32 @@
+---
+- name: "{{ ct_postgres_task_prefix }} Load exposed ports"
+  include_vars: "postgres_ports.yml"
+  when: ct_postgres_enable_ports
+- name: "{{ ct_postgres_task_prefix }} Create config and data directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    recurse: true
+  loop:
+    - "{{ ct_postgres_path_config_base }}"
+    - "{{ ct_postgres_path_data }}"
+- name: "{{ ct_postgres_task_prefix }} Create env file"
+  template:
+    src: "{{ ct_postgres_template_env }}"
+    dest: "{{ ct_postgres_path_config_env }}"
+    mode: '0644'
+- name: "{{ ct_postgres_task_prefix }} Create container"
+  docker_container:
+    name: "{{ ct_postgres_ct_name }}"
+    image: "{{ ct_postgres_ct_image }}:{{ ct_postgres_ct_version }}"
+    env_file: "{{ ct_postgres_path_config_env }}"
+    restart_policy: "{{ ct_postgres_ct_restart_policy }}"
+    state: "{{ ct_postgres_ct_state }}"
+    restart: "{{ ct_postgres_ct_restart }}"
+    pull: "{{ ct_postgres_ct_pull }}"
+    recreate: "{{ ct_postgres_ct_recreate }}"
+    ports: "{{ ct_postgres_ct_ports }}"
+    volumes: "{{ ct_postgres_ct_mounts }}"
+    command: "{{ ct_postgres_ct_command }}"
+...
