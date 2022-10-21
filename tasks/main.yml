@@ -28,5 +28,6 @@
     recreate: "{{ ct_postgres_ct_recreate }}"
     ports: "{{ ct_postgres_ct_ports }}"
     volumes: "{{ ct_postgres_ct_mounts }}"
+    shm_size: "{{ ct_postgres_ct_shm_size }}"
     command: "{{ ct_postgres_ct_command }}"
 ...
